@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title id="site-title"></title>
+<meta id="metaDesc" name="description" content="">
+<link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+
+<style>
+  :root{
+    --bg:#f4f9ff; --card:#ffffff; --ink:#0c1b2a; --muted:#415066;
+    --brand:#2e7cf6; --brand2:#3aa0ff; --line:#e6efff;
+    --shadow:0 18px 40px rgba(17,43,102,.12);
+    --r:18px; --mw:1120px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;overflow-x:hidden}
+  body{
+    margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
+    color:var(--ink);
+    background:radial-gradient(1200px 420px at 50% -120px,#eaf3ff 15%,transparent 60%), var(--bg);
+    line-height:1.55; letter-spacing:.1px;
+  }
+  img,video,canvas,svg{max-width:100%;height:auto;display:block}
+
+  /* Header */
+  header{position:relative;padding:56px 18px 16px;text-align:center;border-bottom:1px solid var(--line)}
+  .contact-pill{
+    position:absolute; right:16px; top:16px; display:inline-flex; gap:.5rem; align-items:center;
+    padding:8px 14px; border-radius:999px; background:#fff; border:1px solid var(--line); color:var(--brand);
+    box-shadow:var(--shadow); font-weight:600; white-space:nowrap;
+  }
+  h1.logo{
+    margin:6px auto 8px; font-size:clamp(40px,5vw,72px); font-weight:900; letter-spacing:.6px;
+    background:linear-gradient(90deg,var(--brand),var(--brand2)); -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero-desc{max-width:min(920px,100%);margin:10px auto 0;padding:0 12px;text-align:left;color:var(--muted)}
+  .ornament{user-select:none;letter-spacing:.4ch;font-size:15px;color:#97b7ff;white-space:nowrap;overflow:hidden;padding:6px 10px}
+
+  /* Top nav */
+  .topnav{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:18px 0 8px}
+  .tab{
+    border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 14px;border-radius:12px;cursor:pointer;
+    box-shadow:var(--shadow);transition:transform .15s ease, box-shadow .15s ease;font-weight:700
+  }
+  .tab:hover{transform:translateY(-2px)}
+  .tab.active{background:linear-gradient(90deg,#f9fbff,#eef6ff);border-color:#dbe7ff;color:#0f2e7a}
+
+  /* Languages */
+  .topbar{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin:12px 0 0}
+  .lang{display:flex;gap:8px}
+  .lang button{border:1px solid var(--line);background:#fff;color:#20428a;padding:8px 10px;border-radius:10px;cursor:pointer;font-weight:700}
+  .lang button.active{background:#e9f2ff}
+
+  /* Layout */
+  main{max-width:var(--mw);margin:0 auto;padding:22px 16px 80px}
+  section{margin:28px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:22px}
+  h2{margin:0 0 12px;font-size:1.6rem;letter-spacing:.2px}
+  h3{margin:14px 0 8px;font-size:1.1rem}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .feature{padding:14px;border:1px solid var(--line);border-radius:14px;background:#fff}
+  .muted{color:var(--muted)}
+  .tag{padding:6px 10px;border-radius:999px;background:#eef5ff;color:#0f57d7;border:1px solid #d8e7ff;font-size:.82rem}
+
+  /* Gallery */
+  .gallery{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:start}
+  figure{margin:0;overflow:hidden;border-radius:14px;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow)}
+  .shot{width:100%;aspect-ratio:4/3;object-fit:contain;background:#eff5ff;transition:transform .35s ease, filter .35s ease}
+  figure:hover .shot{transform:scale(1.02);filter:saturate(1.05)}
+  figcaption{padding:10px 12px;border-top:1px solid var(--line);color:#62779a;display:flex;justify-content:space-between;align-items:center}
+
+  /* Donate cards */
+  .donate-3d{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .donbtn{
+    position:relative;isolation:isolate;display:block;text-decoration:none;color:#0b2d88;background:#fff;
+    padding:14px;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);transform-style:preserve-3d;transition:transform .2s ease
+  }
+  .donbtn::after{content:"";position:absolute;inset:0;border-radius:14px;z-index:-1;background:radial-gradient(120px 40px at 20% 0%, rgba(46,124,246,.25), transparent 60%);transform:translateZ(-6px)}
+  .donbtn:hover{transform:translateY(-3px) rotateX(2deg)}
+  .donbtn small{display:block;color:var(--muted);margin-top:6px}
+
+  /* Lightbox + a11y */
+  .lightbox{position:fixed;inset:0;background:rgba(11,18,30,.75);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}
+  .lightbox.open{display:flex}
+  .lightbox img{max-width:min(1100px,92vw);max-height:82vh;border-radius:16px;box-shadow:0 16px 60px rgba(0,0,0,.5)}
+  .close{position:absolute;top:14px;right:16px;width:40px;height:40px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:20px;display:grid;place-items:center;cursor:pointer}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,1,1);white-space:nowrap;border:0}
+
+  footer{border-top:1px solid var(--line);padding:24px 12px 40px;text-align:center;color:#6b7fa1}
+  .symbols{font-size:1.2rem;color:#7ea8ff;margin:10px 0}
+  .credits{font-weight:700}
+
+  .route{display:none}
+  .route.active{display:block}
+
+  @media (max-width:560px){ .shot{aspect-ratio:3/2} }
+</style>
+</head>
+<body>
+<header>
+  <!-- Почта Юры: НЕ кликабельная -->
+  <div class="contact-pill">✉ <span id="contactEmail">Varzanov.86@mail.ru</span></div>
+
+  <div class="ornament">⟡ ◬ ◓ ✦ ⟡ ◬ ◓ ✦ ⟡ ◬ ◓ ✦ ⟡ ◬ ◓ ✦</div>
+  <h1 class="logo" data-i18n="brand"></h1>
+  <div class="hero-desc" data-i18n="hero_desc"></div>
+
+  <nav class="topnav" role="tablist" aria-label="Primary">
+    <button class="tab active" data-route="drone" aria-selected="true" data-i18n="nav_drone"></button>
+    <button class="tab" data-route="mask" aria-selected="false" data-i18n="nav_mask"></button>
+    <button class="tab" data-route="robot" aria-selected="false" data-i18n="nav_robot"></button>
+    <button class="tab" data-route="mirror" aria-selected="false" data-i18n="nav_mirror"></button>
+  </nav>
+
+  <div class="topbar">
+    <div class="lang" id="langbar" role="group" aria-label="Language">
+      <button class="lng active" data-lang="en" type="button">EN</button>
+      <button class="lng" data-lang="ru" type="button">RU</button>
+      <button class="lng" data-lang="jp" type="button">JP</button>
+      <button class="lng" data-lang="ko" type="button">KO</button>
+      <button class="lng" data-lang="zh" type="button">ZH</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- DRONE -->
+  <section id="route-drone" class="route active">
+    <section class="card">
+      <h2 data-i18n="drone_title"></h2>
+      <p class="muted" data-i18n="drone_intro"></p>
+    </section>
+
+    <section class="grid">
+      <div class="feature card">
+        <h3 data-i18n="drone_feat1_h"></h3>
+        <p class="muted" data-i18n="drone_feat1_p"></p>
+      </div>
+      <div class="feature card">
+        <h3 data-i18n="drone_feat2_h"></h3>
+        <p class="muted" data-i18n="drone_feat2_p"></p>
+      </div>
+      <div class="feature card">
+        <h3 data-i18n="drone_feat3_h"></h3>
+        <p class="muted" data-i18n="drone_feat3_p"></p>
+      </div>
+      <div class="feature card">
+        <h3 data-i18n="drone_feat4_h"></h3>
+        <p class="muted" data-i18n="drone_feat4_p"></p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 data-i18n="gallery_h"></h3>
+      <div class="gallery">
+        <!-- подписи оставляем только у дрона -->
+        <figure>
+          <img class="shot" loading="lazy"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755030378/drone-1_b4uncr.png"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755030378/drone-1_b4uncr.png"
+               alt="Black drone charging on pad" referrerpolicy="no-referrer">
+          <figcaption><span data-i18n="gal1_t"></span><span class="tag" data-i18n="tag_charging"></span></figcaption>
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755030371/drone-2_c9cxdb.png"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755030371/drone-2_c9cxdb.png"
+               alt="White drone charging on round pad" referrerpolicy="no-referrer">
+          <figcaption><span data-i18n="gal2_t"></span><span class="tag" data-i18n="tag_charging"></span></figcaption>
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755030378/drone-3_fyel6d.png"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755030378/drone-3_fyel6d.png"
+               alt="Battery charger — white base" referrerpolicy="no-referrer">
+          <figcaption><span data-i18n="gal3_t"></span><span class="tag" data-i18n="tag_battery"></span></figcaption>
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755030373/drone-4_secupu.png"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755030373/drone-4_secupu.png"
+               alt="Battery charger — dark base" referrerpolicy="no-referrer">
+          <figcaption><span data-i18n="gal4_t"></span><span class="tag" data-i18n="tag_battery"></span></figcaption>
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755030373/drone-5_gwldda.png"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755030373/drone-5_gwldda.png"
+               alt="Drone projecting a movie" referrerpolicy="no-referrer">
+          <figcaption><span data-i18n="gal5_t"></span><span class="tag" data-i18n="tag_cinema"></span></figcaption>
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755030384/drone-6_d6kkiq.png"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755030384/drone-6_d6kkiq.png"
+               alt="Drone projecting YouTube in the kitchen" referrerpolicy="no-referrer">
+          <figcaption><span data-i18n="gal6_t"></span><span class="tag" data-i18n="tag_youtube"></span></figcaption>
+        </figure>
+
+        <!-- добавленные 3 фото к дрону -->
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1756061368/WhatsApp_Image_2025-08-24_at_19.16.41_1_jjy64e.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1756061368/WhatsApp_Image_2025-08-24_at_19.16.41_1_jjy64e.jpg"
+               alt="Drone lifestyle 1">
+          <figcaption><span data-i18n="gal5_t"></span><span class="tag" data-i18n="tag_cinema"></span></figcaption>
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1756061368/WhatsApp_Image_2025-08-24_at_19.16.42_en0vyo.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1756061368/WhatsApp_Image_2025-08-24_at_19.16.42_en0vyo.jpg"
+               alt="Drone lifestyle 2">
+          <figcaption><span data-i18n="gal6_t"></span><span class="tag" data-i18n="tag_youtube"></span></figcaption>
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1756061368/WhatsApp_Image_2025-08-24_at_19.16.41_2_fdmuyb.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1756061368/WhatsApp_Image_2025-08-24_at_19.16.41_2_fdmuyb.jpg"
+               alt="Drone lifestyle 3">
+          <figcaption><span data-i18n="gal5_t"></span><span class="tag" data-i18n="tag_cinema"></span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 data-i18n="don_andrew_h"></h3>
+      <div class="donate-3d">
+        <a class="donbtn" href="https://tonviewer.com/UQAF1vfAF-Icd6atjkDg5NE1u1TZieQw8uCRr14Pmffr3v5y" target="_blank" rel="noopener noreferrer">TON <small data-i18n="don_ton_s"></small></a>
+        <a class="donbtn" href="https://etherscan.io/address/0x14Cb5A3792cB58749702C3b27a01aFf5EAa34b4B" target="_blank" rel="noopener noreferrer">ETH / USDT (ERC20) <small data-i18n="don_eth_s"></small></a>
+        <a class="donbtn" href="https://tronscan.org/#/address/TTKQXpFqeHb2uXgfZFfhVyp9kSdE2De8C4" target="_blank" rel="noopener noreferrer">TRON / USDT (TRC20) <small data-i18n="don_tron_s"></small></a>
+        <a class="donbtn" href="https://blockchair.com/bitcoin/address/bc1q95l22gxkj4fnz0rnylw0ff6ftwlq8y4yklgnmj" target="_blank" rel="noopener noreferrer">Bitcoin <small data-i18n="don_btc_s"></small></a>
+        <div class="donbtn"><b>VISA</b>: 4400&nbsp;4303&nbsp;6970&nbsp;2037<small>YURIY&nbsp;VARZANOV</small></div>
+      </div>
+    </section>
+  </section>
+
+  <!-- MASK -->
+  <section id="route-mask" class="route">
+    <section class="card">
+      <h2 data-i18n="mask_title"></h2>
+      <p class="muted" data-i18n="mask_intro"></p>
+    </section>
+
+    <!-- Robotics -->
+    <section class="card">
+      <h3 data-i18n="mask_robotics_h"></h3>
+      <div class="muted">
+        <p data-i18n="mask_robotics_p1"></p>
+        <p data-i18n="mask_robotics_p2"></p>
+      </div>
+    </section>
+
+    <!-- Human -->
+    <section class="card">
+      <h3 data-i18n="mask_human_h"></h3>
+      <div class="muted">
+        <p data-i18n="mask_human_p1"></p>
+        <p data-i18n="mask_human_p2"></p>
+        <p data-i18n="mask_human_p3"></p>
+      </div>
+    </section>
+
+    <!-- Gallery — БЕЗ подписей -->
+    <section class="card">
+      <h3 data-i18n="gallery_h"></h3>
+      <div class="gallery">
+        <!-- HUMAN -->
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755598991/WhatsApp_Image_2025-08-13_at_21.31.11_nydgha.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755598991/WhatsApp_Image_2025-08-13_at_21.31.11_nydgha.jpg"
+               alt="Human mask prototype 2">
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755598991/WhatsApp_Image_2025-08-16_at_01.26.10_ojikh8.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755598991/WhatsApp_Image_2025-08-16_at_01.26.10_ojikh8.jpg"
+               alt="Human mask prototype 3">
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755598991/WhatsApp_Image_2025-08-13_at_21.31.11_nydgha.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755598991/WhatsApp_Image_2025-08-13_at_21.31.11_nydgha.jpg"
+               alt="Human mask prototype — extra">
+        </figure>
+
+        <!-- ROBOTICS -->
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755787554/44a5a5ae-ed11-42cd-9631-22aa21fe5e9e_oxzwxq.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755787554/44a5a5ae-ed11-42cd-9631-22aa21fe5e9e_oxzwxq.jpg"
+               alt="EIDOS mask concept highlight">
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755287751/3087a3e5-572c-47af-94dc-af9f0c0cb6cc_blxvbq.png"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755287751/3087a3e5-572c-47af-94dc-af9f0c0cb6cc_blxvbq.png"
+               alt="Mask prototype base">
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755286978/73a6264c-ed9a-4181-902f-b67b5c4c444f_llcde7.png"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755286978/73a6264c-ed9a-4181-902f-b67b5c4c444f_llcde7.png"
+               alt="Steve Jobs mask">
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755286978/f297c834-634a-41a6-9420-6dc4eea5d51e_kb7rvh.png"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755286978/f297c834-634a-41a6-9420-6dc4eea5d51e_kb7rvh.png"
+               alt="Brad Pitt mask">
+        </figure>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 data-i18n="don_mask_h"></h3>
+      <div class="donate-3d">
+        <a class="donbtn" href="https://tonviewer.com/UQAF1vfAF-Icd6atjkDg5NE1u1TZieQw8uCRr14Pmffr3v5y" target="_blank" rel="noopener noreferrer">TON</a>
+        <a class="donbtn" href="https://etherscan.io/address/0x14Cb5A3792cB58749702C3b27a01aFf5EAa34b4B" target="_blank" rel="noopener noreferrer">ETH / USDT (ERC20)</a>
+        <a class="donbtn" href="https://tronscan.org/#/address/TTKQXpFqeHb2uXgfZFfhVyp9kSdE2De8C4" target="_blank" rel="noopener noreferrer">TRON / USDT (TRC20)</a>
+        <a class="donbtn" href="https://blockchair.com/bitcoin/address/bc1q95l22gxkj4fnz0rnylw0ff6ftwlq8y4yklgnmj" target="_blank" rel="noopener noreferrer">Bitcoin</a>
+        <div class="donbtn"><b>VISA</b>: 4400&nbsp;4303&nbsp;6970&nbsp;2037<small>YURIY&nbsp;VARZANOV</small></div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ROBOT -->
+  <section id="route-robot" class="route">
+    <section class="card">
+      <h2 data-i18n="robot_title"></h2>
+      <div class="muted" data-i18n="robot_intro"></div>
+    </section>
+
+    <section class="grid">
+      <div class="feature card">
+        <h3 data-i18n="robot_feat1_h"></h3>
+        <p class="muted" data-i18n="robot_feat1_p"></p>
+      </div>
+      <div class="feature card">
+        <h3 data-i18n="robot_feat2_h"></h3>
+        <p class="muted" data-i18n="robot_feat2_p"></p>
+      </div>
+      <div class="feature card">
+        <h3 data-i18n="robot_feat3_h"></h3>
+        <p class="muted" data-i18n="robot_feat3_p"></p>
+      </div>
+      <div class="feature card">
+        <h3 data-i18n="robot_feat4_h"></h3>
+        <p class="muted" data-i18n="robot_feat4_p"></p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 data-i18n="robot_gal_h"></h3>
+      <div class="gallery">
+        <!-- БЕЗ подписей -->
+        <figure>
+          <img class="shot" loading="lazy"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755101792/ab6a27f2-1d6a-402f-8657-07f75b1d0b5b_kjj9cz.png"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755101792/ab6a27f2-1d6a-402f-8657-07f75b1d0b5b_kjj9cz.png"
+               alt="AnestAI console and sensors">
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755101792/d4535488-bce7-4ecb-a31a-1a89962f1da3_meawum.png"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755101792/d4535488-bce7-4ecb-a31a-1a89962f1da3_meawum.png"
+               alt="Operating room integration">
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755101792/bbcaf782-a33a-4516-b66f-84e86a4411e3_rnahcz.png"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755101792/bbcaf782-a33a-4516-b66f-84e86a4411e3_rnahcz.png"
+               alt="Bedside monitoring">
+        </figure>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 data-i18n="don_robot_h"></h3>
+      <div class="donate-3d">
+        <a class="donbtn" href="https://tonviewer.com/UQAF1vfAF-Icd6atjkDg5NE1u1TZieQw8uCRr14Pmffr3v5y" target="_blank" rel="noopener noreferrer">TON</a>
+        <a class="donbtn" href="https://etherscan.io/address/0x14Cb5A3792cB58749702C3b27a01aFf5EAa34b4B" target="_blank" rel="noopener noreferrer">ETH / USDT (ERC20)</a>
+        <a class="donbtn" href="https://tronscan.org/#/address/TTKQXpFqeHb2uXgfZFfhVyp9kSdE2De8C4" target="_blank" rel="noopener noreferrer">TRON / USDT (TRC20)</a>
+        <a class="donbtn" href="https://blockchair.com/bitcoin/address/bc1q95l22gxkj4fnz0rnylw0ff6ftwlq8y4yklgnmj" target="_blank" rel="noopener noreferrer">Bitcoin</a>
+        <div class="donbtn"><b>VISA</b>: 4400&nbsp;4303&nbsp;6970&nbsp;2037<small>YURIY&nbsp;VARZANOV</small></div>
+      </div>
+    </section>
+  </section>
+
+  <!-- VITA MIRROR -->
+  <section id="route-mirror" class="route">
+    <section class="card">
+      <h2 data-i18n="mirror_title"></h2>
+      <div class="muted" data-i18n="mirror_intro"></div>
+    </section>
+
+    <!-- App Ecosystem — целиком на i18n -->
+    <section class="card">
+      <h3 data-i18n="mirror_apps_title"></h3>
+      <div class="muted">
+        <h4 data-i18n="mirror_health_h"></h4>
+        <ul>
+          <li data-i18n="mirror_health_fitmirror"></li>
+          <li data-i18n="mirror_health_healthpulse"></li>
+          <li data-i18n="mirror_health_sleepcare"></li>
+        </ul>
+
+        <h4 data-i18n="mirror_edu_h"></h4>
+        <ul>
+          <li data-i18n="mirror_edu_edumirror"></li>
+          <li data-i18n="mirror_edu_langmirror"></li>
+          <li data-i18n="mirror_edu_storytime"></li>
+        </ul>
+
+        <h4 data-i18n="mirror_psych_h"></h4>
+        <ul>
+          <li data-i18n="mirror_psych_moodmirror"></li>
+          <li data-i18n="mirror_psych_therapyai"></li>
+        </ul>
+
+        <h4 data-i18n="mirror_mem_h"></h4>
+        <ul>
+          <li data-i18n="mirror_mem_memorylink"></li>
+          <li data-i18n="mirror_mem_timemachine"></li>
+          <li data-i18n="mirror_mem_friendmirror"></li>
+        </ul>
+
+        <h4 data-i18n="mirror_inv_h"></h4>
+        <ul>
+          <li data-i18n="mirror_inv_streams"></li>
+          <li data-i18n="mirror_inv_ecosystem"></li>
+          <li data-i18n="mirror_inv_markets"></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 data-i18n="mirror_gal_h"></h3>
+      <!-- ГАЛЕРЕЯ БЕЗ подписей -->
+      <div class="gallery">
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755599639/WhatsApp_Image_2025-08-19_at_13.22.14_e0c8lm.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755599639/WhatsApp_Image_2025-08-19_at_13.22.14_e0c8lm.jpg"
+               alt="VITA Mirror concept 1">
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755599639/WhatsApp_Image_2025-08-19_at_13.57.37_b83wio.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755599639/WhatsApp_Image_2025-08-19_at_13.57.37_b83wio.jpg"
+               alt="VITA Mirror concept 2">
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755599639/WhatsApp_Image_2025-08-19_at_14.11.38_vqdif2.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755599639/WhatsApp_Image_2025-08-19_at_14.11.38_vqdif2.jpg"
+               alt="VITA Mirror concept 3">
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755599639/WhatsApp_Image_2025-08-19_at_12.40.04_seiby0.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755599639/WhatsApp_Image_2025-08-19_at_12.40.04_seiby0.jpg"
+               alt="VITA Mirror concept 4">
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755599639/WhatsApp_Image_2025-08-19_at_13.01.12_wsk7rd.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755599639/WhatsApp_Image_2025-08-19_at_13.01.12_wsk7rd.jpg"
+               alt="VITA Mirror concept 5">
+        </figure>
+        <!-- Replace 6-7 и добавить 3 фото -->
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755599639/WhatsApp_Image_2025-08-19_at_14.24.20_ca0tc3.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755599639/WhatsApp_Image_2025-08-19_at_14.24.20_ca0tc3.jpg"
+               alt="VITA Mirror concept 6">
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755930092/WhatsApp_Image_2025-08-23_at_11.21.15_bpkra0.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1755930092/WhatsApp_Image_2025-08-23_at_11.21.15_bpkra0.jpg"
+               alt="VITA Mirror concept 7">
+        </figure>
+
+        <!-- новые 3 фото -->
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1756044040/WhatsApp_Image_2025-08-24_at_18.57.16_sinejr.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1756044040/WhatsApp_Image_2025-08-24_at_18.57.16_sinejr.jpg"
+               alt="VITA Mirror new concept A">
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1756044040/WhatsApp_Image_2025-08-24_at_18.57.20_m7nm1c.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1756044040/WhatsApp_Image_2025-08-24_at_18.57.20_m7nm1c.jpg"
+               alt="VITA Mirror new concept B">
+        </figure>
+        <figure>
+          <img class="shot" loading="lazy" referrerpolicy="no-referrer"
+               src="https://res.cloudinary.com/dzbnyftqp/image/upload/v1756044040/WhatsApp_Image_2025-08-24_at_18.57.18_vug6sj.jpg"
+               data-full="https://res.cloudinary.com/dzbnyftqp/image/upload/v1756044040/WhatsApp_Image_2025-08-24_at_18.57.18_vug6sj.jpg"
+               alt="VITA Mirror new concept C">
+        </figure>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 data-i18n="don_mirror_h"></h3>
+      <div class="donate-3d">
+        <a class="donbtn" href="https://tonviewer.com/UQAF1vfAF-Icd6atjkDg5NE1u1TZieQw8uCRr14Pmffr3v5y" target="_blank" rel="noopener noreferrer">TON</a>
+        <a class="donbtn" href="https://etherscan.io/address/0x14Cb5A3792cB58749702C3b27a01aFf5EAa34b4B" target="_blank" rel="noopener noreferrer">ETH / USDT (ERC20)</a>
+        <a class="donbtn" href="https://tronscan.org/#/address/TTKQXpFqeHb2uXgfZFfhVyp9kSdE2De8C4" target="_blank" rel="noopener noreferrer">TRON / USDT (TRC20)</a>
+        <a class="donbtn" href="https://blockchair.com/bitcoin/address/bc1q95l22gxkj4fnz0rnylw0ff6ftwlq8y4yklgnmj" target="_blank" rel="noopener noreferrer">Bitcoin</a>
+        <div class="donbtn"><b>VISA</b>: 4400&nbsp;4303&nbsp;6970&nbsp;2037<small>YURIY&nbsp;VARZANOV</small></div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ORIGINALITY -->
+  <section id="route-originality" class="route">
+    <section class="card">
+      <h2 data-i18n="orig_title"></h2>
+      <div class="muted" data-i18n="orig_text"></div>
+    </section>
+  </section>
+
+  <!-- FUTURE -->
+  <section id="route-future" class="route">
+    <section class="card">
+      <h2 data-i18n="future_title"></h2>
+      <div class="muted" data-i18n="future_text"></div>
+    </section>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer id="site-footer" role="contentinfo" aria-labelledby="legal-title">
+  <div class="ornament">⟡ ◬ ◓ ✦ ⟡ ◬ ◓ ✦ ⟡ ◬ ◓ ✦ ⟡ ◬ ◓ ✦</div>
+  <div class="symbols">★ ⊙ ∞ ♻ ⚡ ☁ 🤖 ✉</div>
+  <h3 id="legal-title" class="sr-only">Legal</h3>
+
+  <div class="legal legal-ru" lang="ru" style="display:none">
+    <p data-i18n="legal_ru_1"></p>
+    <p data-i18n="legal_ru_2"></p>
+    <p data-i18n="legal_ru_3"></p>
+  </div>
+
+  <div class="legal legal-en" lang="en">
+    <p data-i18n="legal_en_1"></p>
+    <p data-i18n="legal_en_2"></p>
+    <p data-i18n="legal_en_3"></p>
+  </div>
+
+  <p style="margin:12px 0">
+    <a class="btn" href="#originality" data-route="originality" data-i18n="nav_originality"></a>
+    <a class="btn" href="#future" data-route="future" style="margin-left:8px" data-i18n="nav_future"></a>
+  </p>
+
+  <div class="credits" data-i18n="credits"></div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="app-core.js"></script>
+<script src="app-i18n.js"></script>
+</body>
+</html>
