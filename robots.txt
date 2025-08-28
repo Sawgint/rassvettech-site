@@ -1,0 +1,30 @@
+# robots.txt — разрешаем индексацию всем
+User-agent: *
+Allow: /
+
+# Дополнительно ЯВНО разрешаем ИИ-ботам
+User-agent: GPTBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+# (необязательно, но полезно)
+Sitemap: https://rassvettech.com/sitemap.xml
